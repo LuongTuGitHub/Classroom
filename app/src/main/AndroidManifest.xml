@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
-        <activity android:name=".activity.AddLessonCourseActivity"></activity>
+        <activity android:name=".activity.AddLessonCourseActivity"/>
         <activity android:name=".activity.AddWeekCourseActivity" />
         <activity android:name=".activity.EditIntroductionActivity" />
         <activity android:name=".activity.ViewDetailCourseStudentActivity" />

@@ -162,7 +162,7 @@ public class AddCourseStudentActivity extends AppCompatActivity {
                 if (courses.get(i).getCourseID().equals(UUID)) {
                     if (courseUUID != null) {
                         for (int j = 0; j < courseUUID.size(); j++) {
-                            if (courseUUID.get(i).equals(UUID)) {
+                            if (courseUUID.get(j).equals(UUID)) {
                                 return false;
                             }
                         }
@@ -178,8 +178,10 @@ public class AddCourseStudentActivity extends AppCompatActivity {
         if(person.getCourses()!=null){
             for (int i = 0; i < courses.size(); i++) {
                 if (courses.get(i).getCourseID().equals(code)) {
-                    if(person.getCourses().get(i).equals(courses.get(i).getCourseUUID())){
-                        return false;
+                    for (int j = 0; j < person.getCourses().size() ; j++) {
+                        if(person.getCourses().get(j).equals(courses.get(i).getCourseUUID())){
+                            return false;
+                        }
                     }
                 }
             }

@@ -42,6 +42,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 public class SetImageUserActivity extends AppCompatActivity {
 
@@ -132,7 +133,7 @@ public class SetImageUserActivity extends AppCompatActivity {
     }
 
     private void loadUser() {
-        refDb.child(Const.ACCOUNT).child(fUser.getEmail().hashCode() + "").addValueEventListener(new ValueEventListener() {
+        refDb.child(Const.ACCOUNT).child(Objects.requireNonNull(fUser.getEmail()).hashCode() + "").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getValue() != null) {
@@ -141,7 +142,7 @@ public class SetImageUserActivity extends AppCompatActivity {
                         tv_user.setText(person.getNameUser());
                         refStg.child(Const.AVATAR).child(person.getUserUUID() + ".png").getBytes(Long.MAX_VALUE).addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-                                Bitmap bitmap = BitmapFactory.decodeByteArray(task.getResult(), 0, task.getResult().length);
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(task.getResult(), 0, Objects.requireNonNull(task.getResult()).length);
                                 iv_user.setImageBitmap(bitmap);
                             }
                         });

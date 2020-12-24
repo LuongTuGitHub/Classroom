@@ -75,7 +75,7 @@ public class HomeActivity extends AppCompatActivity implements MenuOnClickItem, 
 
     private SharedPreferences refShare;
 
-    private List<Course> courses;
+    private List<String> courses;
 
     private CourseAdapter courseAdapter;
 
@@ -153,10 +153,10 @@ public class HomeActivity extends AppCompatActivity implements MenuOnClickItem, 
     public boolean OnClickItem(MenuItem menu, int position) {
         switch (menu.getItemId()){
             case R.id.cancel_course:
-                cancelCourse(courses.get(position).getCourseUUID());
+                cancelCourse(courses.get(position));
                 break;
             case R.id.edit_course:
-                routerViewDetailCourseTeacher(courses.get(position).getCourseUUID());
+                routerViewDetailCourseTeacher(courses.get(position));
                 break;
             case R.id.delete_course:
                 break;
@@ -237,8 +237,6 @@ public class HomeActivity extends AppCompatActivity implements MenuOnClickItem, 
 
         courseAdapter = new CourseAdapter();
         courseAdapter.setMenuOnClickItem(this);
-
-        courseAdapter.setCourses(courses);
     }
 
     private void cancelCourse(String UUID){
@@ -255,54 +253,6 @@ public class HomeActivity extends AppCompatActivity implements MenuOnClickItem, 
     }
 
 
-    private void loadCourse() {
-        refDb.child(Const.COURSE).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.getValue() != null) {
-                    Course course = snapshot.getValue(Course.class);
-                    if (course != null) {
-                        if (checkJoin(course.getCourseUUID())) {
-                            courses.add(course);
-                            courseAdapter.setCourses(courses);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-
-    private boolean checkJoin(String UUID) {
-        if(person.getCourses()!=null){
-            for (String course : person.getCourses()) {
-                if (course.equals(UUID)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     private boolean checkNetWork() {
         ConnectivityManager mConnect = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -370,14 +320,14 @@ public class HomeActivity extends AppCompatActivity implements MenuOnClickItem, 
                 if (snapshot.getValue() != null) {
                     person = snapshot.getValue(Person.class);
                     if (person != null) {
+                        courseAdapter.setCourses(person.getCourses());
+                        courses = person.getCourses();
                         refStg.child(Const.AVATAR).child(person.getUserUUID() + ".png").getBytes(Long.MAX_VALUE).addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(task.getResult(), 0, Objects.requireNonNull(task.getResult()).length);
                                 iv_user.setImageBitmap(bitmap);
                             }
                         });
-                        courses.clear();
-                        loadCourse();
                     }
                 }
             }

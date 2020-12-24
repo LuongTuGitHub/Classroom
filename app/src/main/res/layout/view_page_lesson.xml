@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <EditText
+        android:textColor="@color/black"
+        android:id="@+id/edt_content"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/iv_image_page"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:src="@drawable/_74_2742567_welcome_to_our_website_google_classroom_logo_hd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:id="@+id/video_youtube"
+        app:showFullScreenButton="true"
+        app:autoPlay="false"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

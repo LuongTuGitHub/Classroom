@@ -124,7 +124,9 @@ public class ViewDetailCourseTeacherActivity extends AppCompatActivity implement
         LinearLayoutManager manager = new LinearLayoutManager(ViewDetailCourseTeacherActivity.this,RecyclerView.VERTICAL,false);
         rv_week.setLayoutManager(manager);
         adapter = new WeekTeacherAdapter();
+        adapter.setContext(ViewDetailCourseTeacherActivity.this);
         adapter.setAddLesson(this);
+        adapter.setUUID(UUID);
         rv_week.setAdapter(adapter);
     }
 

@@ -58,4 +58,10 @@
     <string name="add_lesson">Add Lesson</string>
     <string name="add_week">Add Week</string>
     <string name="please_set_a_description_for_the_week_and_add_more_lessons">Please set a description for the week and add more lessons</string>
+    <string name="enter_content">Enter Content</string>
+    <string name="id">ID</string>
+    <string name="use_youtube_video_id_to_add_videos">Use Youtube Video ID to add videos</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="lesson">Lesson</string>
 </resources>

@@ -38,7 +38,7 @@ import java.util.Objects;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHolder> {
 
-    private List<Course> courses;
+    private List<String> courses;
 
     private final FirebaseUser fUser;
     private final StorageReference refStg;
@@ -62,7 +62,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         refDb = FirebaseDatabase.getInstance().getReference();
     }
 
-    public void setCourses(List<Course> courses) {
+    public void setCourses(List<String> courses) {
         this.courses = courses;
         notifyDataSetChanged();
     }
@@ -76,44 +76,58 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
 
     @Override
     public void onBindViewHolder(@NonNull CourseHolder holder, int position) {
-        Course course = courses.get(position);
-        refDb.child(Const.ACCOUNT).child(course.getTeacher().hashCode()+"").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+       refDb.child(Const.COURSE).child(courses.get(position)).addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.getValue()!=null){
-                    Person person = snapshot.getValue(Person.class);
-                    if(person!=null){
-                        holder.tv_teacher.setText(person.getNameUser());
+                    Course course = snapshot.getValue(Course.class);
+                    if(course!=null){
+                        refDb.child(Const.ACCOUNT).child(course.getTeacher().hashCode()+"").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(snapshot.getValue()!=null){
+                                    Person person = snapshot.getValue(Person.class);
+                                    if(person!=null){
+                                        holder.tv_teacher.setText(person.getNameUser());
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                        holder.iv_course.setOnClickListener(v -> onClickItemCourse.OnClickItem(v,course.getCourseUUID()));
+                        holder.itemView.setOnClickListener(v -> onClickItemCourse.OnClickItem(v,course.getCourseUUID()));
+                        holder.tv_name_course.setOnClickListener(v -> onClickItemCourse.OnClickItem(v,course.getCourseUUID()));
+                        holder.tv_teacher.setOnClickListener(v -> onClickItemCourse.OnClickItem(v,course.getCourseUUID()));
+
+                        holder.tv_name_course.setText(course.getNameCourse());
+
+                        refStg.child(Const.COURSE).child(course.getCourseUUID()+".png").getBytes(Long.MAX_VALUE).addOnCompleteListener(task -> {
+                            if(task.isSuccessful()){
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(task.getResult(),0, Objects.requireNonNull(task.getResult()).length);
+                                holder.iv_course.setImageBitmap(bitmap);
+                            }
+                        });
+                        PopupMenu menu = new PopupMenu(holder.itemView.getContext(),holder.bt_menu);
+                        if(course.getTeacher().equals(fUser.getEmail())){
+                            menu.inflate(R.menu.menu_course_teacher);
+                        }else {
+                            menu.inflate(R.menu.menu_course_student);
+                        }
+                        menu.setOnMenuItemClickListener(item -> menuOnClickItem.OnClickItem(item,position));
+                        holder.bt_menu.setOnClickListener(v -> menu.show());
                     }
                 }
-            }
+           }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+           @Override
+           public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-        holder.iv_course.setOnClickListener(v -> onClickItemCourse.OnClickItem(v,course.getCourseUUID()));
-        holder.itemView.setOnClickListener(v -> onClickItemCourse.OnClickItem(v,course.getCourseUUID()));
-        holder.tv_name_course.setOnClickListener(v -> onClickItemCourse.OnClickItem(v,course.getCourseUUID()));
-        holder.tv_teacher.setOnClickListener(v -> onClickItemCourse.OnClickItem(v,course.getCourseUUID()));
-
-        holder.tv_name_course.setText(course.getNameCourse());
-
-        refStg.child(Const.COURSE).child(course.getCourseUUID()+".png").getBytes(Long.MAX_VALUE).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                Bitmap bitmap = BitmapFactory.decodeByteArray(task.getResult(),0, Objects.requireNonNull(task.getResult()).length);
-                holder.iv_course.setImageBitmap(bitmap);
-            }
-        });
-        PopupMenu menu = new PopupMenu(holder.itemView.getContext(),holder.bt_menu);
-        if(course.getTeacher().equals(fUser.getEmail())){
-            menu.inflate(R.menu.menu_course_teacher);
-        }else {
-            menu.inflate(R.menu.menu_course_student);
-        }
-        menu.setOnMenuItemClickListener(item -> menuOnClickItem.OnClickItem(item,position));
-        holder.bt_menu.setOnClickListener(v -> menu.show());
+           }
+       });
     }
 
     @Override
