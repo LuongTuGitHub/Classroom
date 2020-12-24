@@ -18,7 +18,6 @@
         android:id="@+id/iv_image_page"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
-        android:src="@drawable/_74_2742567_welcome_to_our_website_google_classroom_logo_hd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView

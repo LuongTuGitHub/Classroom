@@ -41,32 +41,32 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.PageHolder> {
     @NonNull
     @Override
     public PageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_page_lesson,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_page_lesson, parent, false);
         return new PageHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PageHolder holder, int position) {
-        if(position==0){
+        if (position == 0) {
             holder.edt_content.setHint(R.string.enter_content);
         }
-        if(pages.get(position).getText()!=null){
+        if (pages.get(position).getText() != null) {
             holder.edt_content.setText(pages.get(position).getText());
         }
-        if(pages.get(position).getIdYoutube()!=null){
+        if (pages.get(position).getIdYoutube() != null) {
             holder.view_youtube.setVisibility(View.VISIBLE);
             holder.view_youtube.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
                 @Override
                 public void onReady(YouTubePlayer youTubePlayer) {
-                    youTubePlayer.loadVideo(pages.get(position).getIdYoutube(),0);
+                    youTubePlayer.loadVideo(pages.get(position).getIdYoutube(), 0);
                 }
             });
         }
-        if(pages.get(position).getImageUUID()!=null){
+        if (pages.get(position).getImageUUID() != null) {
             holder.iv_image_page.setVisibility(View.VISIBLE);
             Uri uri = Uri.parse(pages.get(position).getImageUUID());
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(resolver,uri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(resolver, uri);
                 holder.iv_image_page.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -92,16 +92,17 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.PageHolder> {
 
     @Override
     public int getItemCount() {
-        if(pages!=null){
+        if (pages != null) {
             return pages.size();
         }
         return 0;
     }
 
-    public static class PageHolder extends RecyclerView.ViewHolder{
+    public static class PageHolder extends RecyclerView.ViewHolder {
         public EditText edt_content;
         public YouTubePlayerView view_youtube;
         public ImageView iv_image_page;
+
         public PageHolder(@NonNull View itemView) {
             super(itemView);
             view_youtube = itemView.findViewById(R.id.video_youtube);

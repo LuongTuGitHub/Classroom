@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,22 +40,12 @@ public class WeekTeacherAdapter extends RecyclerView.Adapter<WeekTeacherAdapter.
     private List<Week> weeks;
     private AddLesson addLesson;
 
-    private String UUID;
-
-    private final DatabaseReference refDb;
 
 
-    public void setUUID(String UUID) {
-        this.UUID = UUID;
-    }
 
     public void setWeeks(List<Week> weeks) {
         this.weeks = weeks;
         notifyDataSetChanged();
-    }
-
-    public WeekTeacherAdapter() {
-        refDb = FirebaseDatabase.getInstance().getReference();
     }
 
     public void setAddLesson(AddLesson addLesson) {
@@ -79,39 +70,34 @@ public class WeekTeacherAdapter extends RecyclerView.Adapter<WeekTeacherAdapter.
         holder.tv_week.setText("Week " + (position + 1) + "");
         holder.tv_description.setText(weeks.get(position).getTitle());
         holder.bt_add_lesson.setOnClickListener(v -> addLesson.addLesson(v, position));
-        refDb.child(Const.COURSE).child(UUID).child("weeks").child(position + "").child("lessons").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.getValue() != null) {
-                    Log.e("â","aaa");
-                    Lesson lesson = snapshot.getValue(Lesson.class);
-                    if (lesson != null) {
-                        lessons.add(lesson);
-                        adapter.notifyDataSetChanged();
-                    }
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+        adapter.setLessons(weeks.get(position).getLessons());
+        holder.bt_toggle_show_lesson_down.setOnClickListener(v -> {
+            if(holder.rv_lesson.getVisibility()==View.GONE){
+                holder.rv_lesson.setVisibility(View.VISIBLE);
+                holder.bt_toggle_show_lesson_down.setVisibility(View.GONE);
+                holder.bt_toggle_show_lesson_up.setVisibility(View.VISIBLE);
             }
         });
+        holder.bt_toggle_show_lesson_up.setOnClickListener(v -> {
+            if(holder.rv_lesson.getVisibility()==View.VISIBLE){
+                holder.rv_lesson.setVisibility(View.GONE);
+                holder.bt_toggle_show_lesson_down.setVisibility(View.VISIBLE);
+                holder.bt_toggle_show_lesson_up.setVisibility(View.GONE);
+            }
+        });
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                addLesson.viewLesson(null,position,viewHolder.getAdapterPosition());
+                adapter.notifyDataSetChanged();
+            }
+        });
+        touchHelper.attachToRecyclerView(holder.rv_lesson);
     }
 
     @Override
@@ -125,7 +111,7 @@ public class WeekTeacherAdapter extends RecyclerView.Adapter<WeekTeacherAdapter.
     public static class WeekTeacherHolder extends RecyclerView.ViewHolder {
         public TextView tv_week, tv_description;
         public RecyclerView rv_lesson;
-        public Button bt_add_lesson;
+        public Button bt_add_lesson,bt_toggle_show_lesson_down,bt_toggle_show_lesson_up;
 
         public WeekTeacherHolder(@NonNull View itemView) {
             super(itemView);
@@ -133,6 +119,8 @@ public class WeekTeacherAdapter extends RecyclerView.Adapter<WeekTeacherAdapter.
             tv_week = itemView.findViewById(R.id.tv_week);
             rv_lesson = itemView.findViewById(R.id.rv_lesson);
             bt_add_lesson = itemView.findViewById(R.id.bt_add_lesson);
+            bt_toggle_show_lesson_down = itemView.findViewById(R.id.bt_toggle_show_lesson_down);
+            bt_toggle_show_lesson_up = itemView.findViewById(R.id.bt_toggle_show_lesson_up);
         }
     }
 }

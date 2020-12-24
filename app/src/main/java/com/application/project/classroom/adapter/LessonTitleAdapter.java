@@ -32,8 +32,9 @@ public class LessonTitleAdapter extends RecyclerView.Adapter<LessonTitleAdapter.
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull LessonTitleHolder holder, int position) {
-        holder.tv_title.setText("Lesson "+(position+1));
+        holder.tv_lesson.setText("Lesson "+(position+1));
         holder.tv_title.setText(lessons.get(position).getTitle());
+
     }
 
     @Override
