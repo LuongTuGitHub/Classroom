@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:gravity="center_vertical"
+        android:textColor="@color/blue_google"
+        android:id="@+id/tv_name_course"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/name_course"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_introduction"
+        android:layout_width="0dp"
+        android:textColor="@color/black"
+        android:text="@string/introduction"
+        android:padding="10dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name_course" />
+
+    <Button
+        android:id="@+id/v_ratting"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginBottom="8dp"
+        android:text="@string/_5_0"
+        android:background="@android:color/transparent"
+        android:textColor="@color/black"
+        android:drawableLeft="@drawable/ic_baseline_star_24"
+        android:drawableStart="@drawable/ic_baseline_star_24"
+        android:drawableTint="@color/color_ratting"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_introduction" />
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="@string/_0"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/v_ratting"
+        app:layout_constraintTop_toBottomOf="@+id/tv_introduction" />
+</androidx.constraintlayout.widget.ConstraintLayout>
