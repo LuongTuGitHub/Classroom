@@ -159,12 +159,17 @@ public class HomeActivity extends AppCompatActivity implements MenuOnClickItem, 
                 routerViewDetailCourseTeacher(courses.get(position));
                 break;
             case R.id.delete_course:
+                routerDeleteCourse(courses.get(position));
                 break;
         }
 
         return true;
     }
-
+    private void routerDeleteCourse(String UUID){
+        Intent intent = new Intent(HomeActivity.this,DeleteCourseActivity.class);
+        intent.putExtra("key",UUID);
+        startActivity(intent);
+    }
     @Override
     public void OnClickItem(View view, String courseUUID) {
         if(person.getWork().equals(Const.STUDENT)){

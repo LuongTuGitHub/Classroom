@@ -71,14 +71,15 @@
             </LinearLayout>
 
             <Button
+                android:textColor="@color/white"
                 android:id="@+id/bt_add_week"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:drawableStart="@drawable/ic_baseline_add_24"
-                android:drawableLeft="@drawable/ic_baseline_add_24"
+                android:background="@drawable/drawable_button_left"
+                android:drawableRight="@drawable/ic_baseline_add_24"
+                android:drawableEnd="@drawable/ic_baseline_add_24"
                 android:drawablePadding="10dp"
-                android:drawableTint="@color/black"
+                android:drawableTint="@color/white"
                 android:gravity="start|center_vertical"
                 android:padding="10dp"
                 android:text="@string/add_week"

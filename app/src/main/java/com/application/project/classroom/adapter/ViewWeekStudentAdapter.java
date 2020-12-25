@@ -106,4 +106,6 @@ public class ViewWeekStudentAdapter extends RecyclerView.Adapter<ViewWeekStudent
             bt_toggle_show_lesson_up = itemView.findViewById(R.id.bt_toggle_show_lesson_up);
         }
     }
+
+
 }

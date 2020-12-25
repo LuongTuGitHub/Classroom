@@ -87,6 +87,7 @@ public class AddLessonCourseActivity extends AppCompatActivity {
                 pages.get(pages.size()-1).setIdYoutube(edt_id.getText().toString());
                 pages.add(new Page(""));
                 adapter.setPages(pages);
+                rv_lesson_edit.scrollToPosition(pages.size()-1);
             }
             dialog.dismiss();
         });
@@ -191,6 +192,7 @@ public class AddLessonCourseActivity extends AppCompatActivity {
                     pages.get(pages.size()-1).setImageUUID(data.getData().toString());
                     pages.add(new Page(""));
                     adapter.setPages(pages);
+                    rv_lesson_edit.scrollToPosition(pages.size()-1);
                 }
             }
         }
