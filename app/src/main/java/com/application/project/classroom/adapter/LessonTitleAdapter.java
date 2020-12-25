@@ -1,6 +1,7 @@
 package com.application.project.classroom.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,11 @@ import java.util.List;
 
 public class LessonTitleAdapter extends RecyclerView.Adapter<LessonTitleAdapter.LessonTitleHolder> {
     private List<Lesson> lessons;
+    private Context context;
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
 
     public void setLessons(List<Lesson> lessons) {
         this.lessons = lessons;
